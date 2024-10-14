@@ -20,4 +20,19 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+//app.MapGet("/employees/{id}", (int id) =>
+
+//{
+
+//    return Results.Ok(new { id, name = "Bob Smith" });
+
+//});
+
+//app.MapPost("/catalog", () =>
+//{
+//    return Results.Ok();
+//});
+
 app.Run();
+
+public partial class Program;
