@@ -52,6 +52,7 @@ Our service exposes an *interface* that other applications can use to drive our 
 
 -UI is for user interaction (i.e visual elements on screen, forms, buttons, etc.)
 -API is for system to system interaction.
+-Both of them are client for a service.
 
 What are some benefits of exposing a service's interface using the HTTP Protocol?
 
