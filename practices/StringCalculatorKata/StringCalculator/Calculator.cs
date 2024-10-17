@@ -4,10 +4,9 @@ public class Calculator
 {
     public int Add(string numbers)
     {
-        int num = 0;
         if (numbers == null || numbers.Length == 0)
         {
-            return num;
+            return 0;
         }
         else if (numbers.Length == 1)
         {
@@ -22,30 +21,23 @@ public class Calculator
                     numbers.Substring(numbers.IndexOf("\n") + 1) :
                     numbers.Substring(3);
             }
-
             string[] valueString = numbers.Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
-            var negativeNumbers = new List<int>();
-            foreach (string value in valueString)
-            {
-                int numValue = convertToInteger(value);
-                if (numValue < 0)
-                {
-                    negativeNumbers.Add(numValue);
-                }
-                num += convertToInteger(value);
-            }
+            var negativeNumbers = valueString.Select(convertToInteger).Where(x => x < 0).ToList();
             if (negativeNumbers.Count > 0)
             {
-                throw new NegativeNumbersException("Negative number Found: " + String.Join(", ", negativeNumbers));
+                throw new NegativeNumbersException("Negative number found: " + String.Join(", ", negativeNumbers));
+            }
+            else
+            {
+                return valueString.Select(convertToInteger).Sum();
             }
         }
-        return num;
     }
 
-    private int convertToInteger(string numbers)
+    private int convertToInteger(string number)
     {
         int num = 0;
-        if (int.TryParse(numbers, out num))
+        if (int.TryParse(number, out num))
         {
             return num > 1000 ? 0 : num;
         }

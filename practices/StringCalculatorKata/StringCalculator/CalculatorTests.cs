@@ -73,7 +73,7 @@ public class CalculatorTests
     {
         var calculator = new Calculator();
         var exception = Assert.Throws<NegativeNumbersException>(() => calculator.Add(value));
-        string expectedMessage = "Negative number Found: " + expectedValue;
+        string expectedMessage = "Negative number found: " + expectedValue;
         Assert.Equal(expectedMessage, exception.Message);
     }
 
@@ -89,6 +89,7 @@ public class CalculatorTests
     [Theory]
     [InlineData("//[***]\n1***2", 3)]
     [InlineData("//[***, #, !]\n1***2#3\n1!2", 9)]
+    [InlineData("//[asdf, #, !]\n1asdf2#3\n1!2asdf6", 15)]
     public void AcceptCustomeDelimitersOfAnyLength(string value, int expectedValue)
     {
         var calculator = new Calculator();
