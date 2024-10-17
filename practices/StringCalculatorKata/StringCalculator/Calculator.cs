@@ -15,35 +15,15 @@ public class Calculator
         }
         else
         {
-
-            var delimiters = new List<string> { ",", "\n" };
+            var delimiters = getDelimiters(numbers);
             if (numbers.StartsWith("//"))
             {
-                if (numbers[2].Equals('['))
-                {
-                    var Matches = Regex.Matches(numbers, @"\[(.*?)\]");
-                    int indexOfNewline = numbers.IndexOf("\n") + 1;
-                    numbers = numbers.Substring(indexOfNewline);
-                    String customDelimiters = "";
-                    foreach (Match Match in Matches)
-                    {
-                        customDelimiters += (Match.Groups[1].Value);
-                    }
-                    String[] strs = customDelimiters.Split(',');
-                    foreach (string str in strs)
-                    {
-                        delimiters.Add(str.Trim());
-                    }
-
-                }
-                else
-                {
-                    delimiters.Add(numbers[2] + "");
-                    numbers = numbers.Substring(3);
-                }
+                numbers = numbers[2].Equals('[') ?
+                    numbers.Substring(numbers.IndexOf("\n") + 1) :
+                    numbers.Substring(3);
             }
 
-            string[] valueString = numbers.Split(delimiters.ToArray(), StringSplitOptions.RemoveEmptyEntries);
+            string[] valueString = numbers.Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
             var negativeNumbers = new List<int>();
             foreach (string value in valueString)
             {
@@ -58,7 +38,6 @@ public class Calculator
             {
                 throw new NegativeNumbersException("Negative number Found: " + String.Join(", ", negativeNumbers));
             }
-
         }
         return num;
     }
@@ -76,9 +55,38 @@ public class Calculator
         }
     }
 
+    private string[] getDelimiters(string numbers)
+    {
+        var delimiters = new List<string> { ",", "\n" };
+        if (numbers.StartsWith("//"))
+        {
+            if (numbers[2].Equals('['))
+            {
+                var Matches = Regex.Matches(numbers, @"\[(.*?)\]");
+                String customDelimiters = "";
+                foreach (Match Match in Matches)
+                {
+                    customDelimiters += (Match.Groups[1].Value);
+                }
+                String[] strs = customDelimiters.Split(',');
+                foreach (string str in strs)
+                {
+                    delimiters.Add(str.Trim());
+                }
+            }
+            else
+            {
+                delimiters.Add(numbers[2] + "");
+            }
+        }
+        return delimiters.ToArray();
+    }
+
     public class NegativeNumbersException : FormatException
     {
         public NegativeNumbersException(String message) : base(message) { }
     }
+
+
 
 }
