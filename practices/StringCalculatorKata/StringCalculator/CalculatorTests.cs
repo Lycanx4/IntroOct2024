@@ -14,14 +14,18 @@ public class CalculatorTests
     }
 
     [Theory]
-    [InlineData("1")]
-    [InlineData("2")]
-    [InlineData("3")]
-    public void SingleIntergerReturnValue(string value)
+    [InlineData("1", 1)]
+    [InlineData("2", 2)]
+    [InlineData("3", 3)]
+    [InlineData("10", 10)]
+    public void SingleIntergerReturnValue(string value, int expected)
     {
         var calculator = new Calculator();
         var result = calculator.Add(value);
-        Assert.Equal(int.Parse(value), result);
+        // this isn't optimal because you are recreating the logic you are testing in your test.
+        // the string calculator literally at this point should be a replacement for int.parse, so you shouldn't be using it.
+        //Assert.Equal(int.Parse(value), result);
+        Assert.Equal(expected, result);
     }
 
     [Theory]
