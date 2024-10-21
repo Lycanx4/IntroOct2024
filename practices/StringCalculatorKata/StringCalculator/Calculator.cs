@@ -8,18 +8,12 @@ public class Calculator
         {
             return 0;
         }
-        else if (numbers.Length == 1)
-        {
-            return convertToInteger(numbers);
-        }
         else
         {
             var delimiters = getDelimiters(numbers);
             if (numbers.StartsWith("//"))
             {
-                numbers = numbers[2].Equals('[') ?
-                    numbers.Substring(numbers.IndexOf("\n") + 1) :
-                    numbers.Substring(3);
+                numbers = numbers.Substring(numbers.IndexOf("\n") + 1);
             }
             string[] valueString = numbers.Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
             var negativeNumbers = valueString.Select(convertToInteger).Where(x => x < 0).ToList();
@@ -36,8 +30,7 @@ public class Calculator
 
     private int convertToInteger(string number)
     {
-        int num = 0;
-        if (int.TryParse(number, out num))
+        if (int.TryParse(number, out int num))
         {
             return num > 1000 ? 0 : num;
         }
@@ -47,20 +40,23 @@ public class Calculator
         }
     }
 
+
     private string[] getDelimiters(string numbers)
     {
         var delimiters = new List<string> { ",", "\n" };
         if (numbers.StartsWith("//"))
         {
+            //int lastIndex = numbers.IndexOf("\n") - 1;
+
             if (numbers[2].Equals('['))
             {
                 var Matches = Regex.Matches(numbers, @"\[(.*?)\]");
-                String customDelimiters = "";
+                string customDelimiters = "";
                 foreach (Match Match in Matches)
                 {
                     customDelimiters += (Match.Groups[1].Value);
                 }
-                String[] strs = customDelimiters.Split(',');
+                string[] strs = customDelimiters.Split(',');
                 foreach (string str in strs)
                 {
                     delimiters.Add(str.Trim());
@@ -78,7 +74,4 @@ public class Calculator
     {
         public NegativeNumbersException(String message) : base(message) { }
     }
-
-
-
 }

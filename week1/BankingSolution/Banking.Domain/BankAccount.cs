@@ -3,12 +3,23 @@
 
 namespace Banking.Domain;
 
-public class BankAccount
+public class BankAccount(ICalculateBonusesForDeposits calculator)
 {
-    decimal _balance = 5000;
-    public void Deposit(decimal ammountToDeposit)
+    private decimal _balance = 7000M;
+
+    //private ICalculateBonusesForDeposits calculator;
+    //public BankAccount(ICalculateBonusesForDeposits bonusCalculator) 
+    //{
+    //    calculator = bonusCalculator;
+    //}
+    public void Deposit(decimal amountToDeposit)
     {
-        _balance += ammountToDeposit;
+        //var calculator = new BonusCalculator();
+        decimal bonus = calculator.CalculateBonusForDepositOn(_balance, amountToDeposit);
+
+
+
+        _balance += amountToDeposit + bonus;
     }
 
     public decimal GetBalance()
@@ -16,11 +27,11 @@ public class BankAccount
         return _balance;
     }
 
-    public void Withdraw(decimal ammountToWithdraw)
+    public void Withdraw(decimal amountToWithdraw)
     {
-        if (ammountToWithdraw <= _balance)
+        if (_balance >= amountToWithdraw)
         {
-            _balance -= ammountToWithdraw;
+            _balance -= amountToWithdraw;
         }
         else
         {
