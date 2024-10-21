@@ -12,6 +12,7 @@ public class CalculatorTests
         Assert.Equal(0, result);
     }
 
+<<<<<<< HEAD
     [Fact]
     public void NullReturnZero()
     {
@@ -20,6 +21,8 @@ public class CalculatorTests
 
     }
 
+=======
+>>>>>>> 102f01342c94ba748bb6432ffa0e90f379d57047
     [Theory]
     [InlineData("1", 1)]
     [InlineData("2", 2)]
