@@ -1,5 +1,7 @@
 import { Component } from "@angular/core";
 
+
+
 @Component({
   selector: "app-welcome",
   standalone: true,
@@ -18,3 +20,4 @@ import { Component } from "@angular/core";
   styles: ``,
 })
 export class WelcomeComponent {}
+
