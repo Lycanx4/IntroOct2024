@@ -1,1 +1,1 @@
-create database catalog
+create database catalog 

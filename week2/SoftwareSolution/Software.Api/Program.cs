@@ -1,4 +1,5 @@
 using Marten;
+using Software.Api.Catalog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,42 +11,47 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var connectionString = builder.Configuration.GetConnectionString("catalog") ?? throw new Exception("No Connection String");
-
+builder.Services.AddScoped<BankAccount>();
 builder.Services.AddMarten(cfg =>
-
 {
-
-    cfg.Connection(connectionString);
-
+    cfg.Connection(connectionString); // IDocumentSession
 }).UseLightweightSessions();
+builder.Services.AddScoped<CatalogManager>();
 
-
+builder.Services.AddCors(b =>
+{
+    b.AddDefaultPolicy(pol =>
+    {
+        pol.AllowAnyOrigin();
+        pol.AllowAnyMethod();
+        pol.AllowAnyHeader(); // consult your local authorities.
+    });
+});
 var app = builder.Build();
 
+app.UseCors();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
+    app.UseSwagger(); // makes that page at /swagger/index.html
     app.UseSwaggerUI();
 }
 
 app.UseAuthorization();
 
 app.MapControllers();
+// we need a way to say "POST /catalog", run this code.
 
-//app.MapGet("/employees/{id}", (int id) =>
 
-//{
+app.Run(); // Blocks here - it just sits and listens for HTTP requests.
 
-//    return Results.Ok(new { id, name = "Bob Smith" });
 
-//});
+// I will not explain this now. no matter how much you beg me. I will later.
 
-//app.MapPost("/catalog", () =>
-//{
-//    return Results.Ok();
-//});
+public partial class Program; // hey dotnet, when you compile, make it public.
 
-app.Run();
 
-public partial class Program;
+public class BankAccount
+{
+
+}
